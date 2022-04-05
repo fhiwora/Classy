@@ -4,7 +4,8 @@
 
 --[=[
     @class Mixins
-    This module is used to register Mixins, add Mixins to classes, and check if classes have Mixins
+    This module is used to register Mixins, add Mixins to classes, and check if classes have Mixins.
+    Mixins are pieces of code you can inject into a class.
 
     ### Example
     ```lua

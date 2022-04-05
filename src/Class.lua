@@ -1,7 +1,7 @@
 --[=[
     @class Class
     This is the internal definition of a class, and what is used internally for your classes, which you can also access.  
-    To see an example of using Classy go [here.](https://dev-fyuusha.github.io/Chain/api/Classy)
+    To see an example of using Classy go [here.](https://dev-fyuusha.github.io/Classy/api/Classy)
 ]=]
 
 

@@ -19,7 +19,7 @@
 
     These keywords are used internally by Classy for managing your classes.  
     You're allowed to use and access these fields and methods of your classes, the only exceptions are `_isInternallyDestroyed` and `_internallyDestroyed` (it is already used internally when `Destroy` is called).  
-    To learn more about these keywords, please read the documentation for [Class](https://dev-fyuusha.github.io/Chain/api/Class).
+    To learn more about these keywords, please read the documentation for [Class](https://dev-fyuusha.github.io/Classy/api/Class).
 
     ### Example
     ```lua
@@ -110,7 +110,7 @@
     @prop Mixins Mixins
     @within Classy
     This is a reference to the Mixins table, where you can register mixins, add mixins to a class, and more.
-    For full documentation refer to the [Mixins](https://dev-fyuusha.github.io/Chain/api/Mixins) documentation
+    For full documentation refer to the [Mixins](https://dev-fyuusha.github.io/Classy/api/Mixins) documentation
 ]=]
 
 --[=[
@@ -228,7 +228,7 @@ end
     This creates a object of an already existing class.
 
     @param className string
-    @param ... tuple? -- this will pass any arguments you wish to pass to the [instantiation](https://dev-fyuusha.github.io/Chain/api/Class) of the class
+    @param ... tuple? -- this will pass any arguments you wish to pass to the [instantiation](https://dev-fyuusha.github.io/Classy/api/Class) of the class
     @return Object<Class>
 ]=]
 function Classy.NewObjectOfClass(className, ...)
