@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="generator" content="Docusaurus v2.0.0-beta.9">
+<title data-react-helmet="true">Mixins | Classy</title><meta data-react-helmet="true" property="og:title" content="Mixins | Classy"><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="description" content="This module is used to register Mixins, add Mixins to classes, and check if classes have Mixins
+
+### Example
+```lua
+    -- To register Mixins
+    -- whenever you register a mixin folder, when adding a Mixin to a class, if the Mixin hasn&#x27;t already been cached
+    -- the folder registered (and every other folder registered) will be searched for the Mixin
+    Classy.Mixins.RegisterMixinFolder(path.to.mixin.folder)
+
+    -- registering mixins manually
+    local TestMixin = {}
+
+    function TestMixin.Add(class)
+        assert(class.TestMethod == nil, &quot;class already has a &#x27;TestMethod&#x27; method&quot;)
+        class.TestMethod = TestMixin.TestMethod
+    end
+
+    function TestMixin.TestMethod()
+        print(&quot;test&quot;)
+    end
+
+    Classy.Mixins.RegisterMixin(&quot;TestMixin&quot;, TestMixin)
+
+    -- registering a mixin in a module
+    Classy.Mixins.RegisterMixinFromModule(path.to.module.script)
+
+    -- adding a mixin to a class
+
+    local NewClass = Classy.NewClass({
+        ClassName = &quot;New&quot;;
+    }) -- you could alternatively pass the names of the Mixins you want to add as a table for the 2nd argument of the NewClass and NewSubclass methods
+    Classy.Mixins.AddMixin(NewClass, &quot;TestMixin&quot;)
+
+    -- It&#x27;s also worth noting that passing a object of a class as the first parameter to AddMixin, will add it to the entire class, not the object itself.
+
+    local newObject = NewClass.new()
+    NewClass.TestMethod()
+    newObject.TestMethod()
+
+    -- you can even use mixins on any table
+    local someTable = {}
+    Classy.Mixins.AddMixin(someTable, &quot;TestMixin&quot;)
+
+    someTable.TestMethod()
+```"><meta data-react-helmet="true" property="og:description" content="This module is used to register Mixins, add Mixins to classes, and check if classes have Mixins
+
+### Example
+```lua
+    -- To register Mixins
+    -- whenever you register a mixin folder, when adding a Mixin to a class, if the Mixin hasn&#x27;t already been cached
+    -- the folder registered (and every other folder registered) will be searched for the Mixin
+    Classy.Mixins.RegisterMixinFolder(path.to.mixin.folder)
+
+    -- registering mixins manually
+    local TestMixin = {}
+
+    function TestMixin.Add(class)
+        assert(class.TestMethod == nil, &quot;class already has a &#x27;TestMethod&#x27; method&quot;)
+        class.TestMethod = TestMixin.TestMethod
+    end
+
+    function TestMixin.TestMethod()
+        print(&quot;test&quot;)
+    end
+
+    Classy.Mixins.RegisterMixin(&quot;TestMixin&quot;, TestMixin)
+
+    -- registering a mixin in a module
+    Classy.Mixins.RegisterMixinFromModule(path.to.module.script)
+
+    -- adding a mixin to a class
+
+    local NewClass = Classy.NewClass({
+        ClassName = &quot;New&quot;;
+    }) -- you could alternatively pass the names of the Mixins you want to add as a table for the 2nd argument of the NewClass and NewSubclass methods
+    Classy.Mixins.AddMixin(NewClass, &quot;TestMixin&quot;)
+
+    -- It&#x27;s also worth noting that passing a object of a class as the first parameter to AddMixin, will add it to the entire class, not the object itself.
+
+    local newObject = NewClass.new()
+    NewClass.TestMethod()
+    newObject.TestMethod()
+
+    -- you can even use mixins on any table
+    local someTable = {}
+    Classy.Mixins.AddMixin(someTable, &quot;TestMixin&quot;)
+
+    someTable.TestMethod()
+```"><meta data-react-helmet="true" property="og:url" content="https://dev-fyuusha.github.io/Classy/api/Mixins"><meta data-react-helmet="true" name="docusaurus_locale" content="en"><meta data-react-helmet="true" name="docusaurus_tag" content="default"><link data-react-helmet="true" rel="canonical" href="https://dev-fyuusha.github.io/Classy/api/Mixins"><link data-react-helmet="true" rel="alternate" href="https://dev-fyuusha.github.io/Classy/api/Mixins" hreflang="en"><link data-react-helmet="true" rel="alternate" href="https://dev-fyuusha.github.io/Classy/api/Mixins" hreflang="x-default"><link rel="stylesheet" href="/Classy/assets/css/styles.06f234af.css">
+<link rel="preload" href="/Classy/assets/js/runtime~main.04390c91.js" as="script">
+<link rel="preload" href="/Classy/assets/js/main.631b27b7.js" as="script">
+</head>
+<body>
+<script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,e("light"))}()</script><div id="__docusaurus">
+<div><a href="#" class="skipToContent_1oUP">Skip to main content</a></div><nav class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Navigation bar toggle" class="navbar__toggle clean-btn" type="button" tabindex="0"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/Classy/"><b class="navbar__title">Classy</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/Classy/api/">API</a></div><div class="navbar__items navbar__items--right"><a href="https://github.com/dev-fyuusha/Classy" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link"><span>GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_3J9K"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a><div class="toggle_71bT toggle_3Zt9 toggleDisabled_3cF-"><div class="toggleTrack_32Fl" role="button" tabindex="-1"><div class="toggleTrackCheck_3lV7"><span class="toggleIcon_O4iE">🌜</span></div><div class="toggleTrackX_S2yS"><span class="toggleIcon_O4iE">🌞</span></div><div class="toggleTrackThumb_xI_Z"></div></div><input type="checkbox" class="toggleScreenReader_28Tw" aria-label="Switch between dark and light mode"></div><div class="navbar__search"><span aria-label="expand searchbar" role="button" class="search-icon" tabindex="0"></span><input type="search" id="search_input_react" placeholder="Press S to Search..." aria-label="Search" class="navbar__search-input search-bar"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div class="main-wrapper docPageContainer_2Kz0"><div class="docPage_1bdk"><div class="docSidebarContainer_1ykS"><div class="sidebar_15mo"><nav class="menu thin-scrollbar menu_Bmed"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><a class="menu__link menu__link--sublist menu__link--active" href="#">Classy</a><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/Classy/api/Classy">​Classy</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/Classy/api/Class">​Class</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/Classy/api/Mixins">​Mixins</a></li></ul></li></ul></nav><button type="button" title="Collapse sidebar" aria-label="Collapse sidebar" class="button button--secondary button--outline collapseSidebarButton_1CGd"><svg width="20" height="20" aria-hidden="true" class="collapseSidebarButtonIcon_3E-R"><g fill="#7a7a7a"><path d="M9.992 10.023c0 .2-.062.399-.172.547l-4.996 7.492a.982.982 0 01-.828.454H1c-.55 0-1-.453-1-1 0-.2.059-.403.168-.551l4.629-6.942L.168 3.078A.939.939 0 010 2.528c0-.548.45-.997 1-.997h2.996c.352 0 .649.18.828.45L9.82 9.472c.11.148.172.347.172.55zm0 0"></path><path d="M19.98 10.023c0 .2-.058.399-.168.547l-4.996 7.492a.987.987 0 01-.828.454h-3c-.547 0-.996-.453-.996-1 0-.2.059-.403.168-.551l4.625-6.942-4.625-6.945a.939.939 0 01-.168-.55 1 1 0 01.996-.997h3c.348 0 .649.18.828.45l4.996 7.492c.11.148.168.347.168.55zm0 0"></path></g></svg></button></div></div><main class="docMainContainer_28N5"><div class="container padding-vert--lg"><div class="row"><div class="col docItemCol_3WPG"><div class="docItemContainer_3XDu"><article><div class="member_qHIL markdown"><div class="tocCollapsible_1PrD theme-doc-toc-mobile tocMobile_3ryM"><button type="button" class="clean-btn tocCollapsibleButton_2O1e">On this page</button></div><header><h1 class="docTitle_1ddc" style="text-decoration:none"><span style="display:inline-block">Mixins</span></h1><div class="luaClassTags_2Zrs"></div><div>
+<p>This module is used to register Mixins, add Mixins to classes, and check if classes have Mixins</p>
+<h3>Example</h3>
+<pre class="language-lua"><code class="language-lua">    <span class="token comment">-- To register Mixins</span>
+    <span class="token comment">-- whenever you register a mixin folder, when adding a Mixin to a class, if the Mixin hasn't already been cached</span>
+    <span class="token comment">-- the folder registered (and every other folder registered) will be searched for the Mixin</span>
+    Classy<span class="token punctuation">.</span>Mixins<span class="token punctuation">.</span><span class="token function">RegisterMixinFolder</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span>to<span class="token punctuation">.</span>mixin<span class="token punctuation">.</span>folder<span class="token punctuation">)</span>
+
+    <span class="token comment">-- registering mixins manually</span>
+    <span class="token keyword">local</span> TestMixin <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token keyword">function</span> TestMixin<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>class<span class="token punctuation">)</span>
+        <span class="token function">assert</span><span class="token punctuation">(</span>class<span class="token punctuation">.</span>TestMethod <span class="token operator">==</span> <span class="token keyword">nil</span><span class="token punctuation">,</span> <span class="token string">"class already has a 'TestMethod' method"</span><span class="token punctuation">)</span>
+        class<span class="token punctuation">.</span>TestMethod <span class="token operator">=</span> TestMixin<span class="token punctuation">.</span>TestMethod
+    <span class="token keyword">end</span>
+
+    <span class="token keyword">function</span> TestMixin<span class="token punctuation">.</span><span class="token function">TestMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span>
+    <span class="token keyword">end</span>
+
+    Classy<span class="token punctuation">.</span>Mixins<span class="token punctuation">.</span><span class="token function">RegisterMixin</span><span class="token punctuation">(</span><span class="token string">"TestMixin"</span><span class="token punctuation">,</span> TestMixin<span class="token punctuation">)</span>
+
+    <span class="token comment">-- registering a mixin in a module</span>
+    Classy<span class="token punctuation">.</span>Mixins<span class="token punctuation">.</span><span class="token function">RegisterMixinFromModule</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span>to<span class="token punctuation">.</span>module<span class="token punctuation">.</span>script<span class="token punctuation">)</span>
+
+    <span class="token comment">-- adding a mixin to a class</span>
+
+    <span class="token keyword">local</span> NewClass <span class="token operator">=</span> Classy<span class="token punctuation">.</span><span class="token function">NewClass</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        ClassName <span class="token operator">=</span> <span class="token string">"New"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment">-- you could alternatively pass the names of the Mixins you want to add as a table for the 2nd argument of the NewClass and NewSubclass methods</span>
+    Classy<span class="token punctuation">.</span>Mixins<span class="token punctuation">.</span><span class="token function">AddMixin</span><span class="token punctuation">(</span>NewClass<span class="token punctuation">,</span> <span class="token string">"TestMixin"</span><span class="token punctuation">)</span>
+
+    <span class="token comment">-- It's also worth noting that passing a object of a class as the first parameter to AddMixin, will add it to the entire class, not the object itself.</span>
+
+    <span class="token keyword">local</span> newObject <span class="token operator">=</span> NewClass<span class="token punctuation">.</span><span class="token function">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    NewClass<span class="token punctuation">.</span><span class="token function">TestMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    newObject<span class="token punctuation">.</span><span class="token function">TestMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment">-- you can even use mixins on any table</span>
+    <span class="token keyword">local</span> someTable <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    Classy<span class="token punctuation">.</span>Mixins<span class="token punctuation">.</span><span class="token function">AddMixin</span><span class="token punctuation">(</span>someTable<span class="token punctuation">,</span> <span class="token string">"TestMixin"</span><span class="token punctuation">)</span>
+
+    someTable<span class="token punctuation">.</span><span class="token function">TestMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+</div></header><h2 class="anchor anchorWithStickyNavbar_31ik" id="functions">Functions<a aria-hidden="true" class="hash-link" href="#functions" title="Direct link to heading">​</a></h2><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="RegisterMixinFolder"><code style="text-decoration:none">RegisterMixinFolder</code><a aria-hidden="true" class="hash-link" href="#RegisterMixinFolder" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/Mixins.lua#L102"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Mixins<!-- -->.</code><code class="green_3LnD">RegisterMixinFolder</code><code>(</code><code>folder<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Instance" target="_blank" rel="noopener noreferrer">Instance<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD">&lt;</code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/class/Folder" target="_blank" rel="noopener noreferrer">Folder<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD">&gt;</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Registers the folder as a valid location for finding Mixins.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="RegisterMixin"><code style="text-decoration:none">RegisterMixin</code><a aria-hidden="true" class="hash-link" href="#RegisterMixin" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/Mixins.lua#L114"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Mixins<!-- -->.</code><code class="green_3LnD">RegisterMixin</code><code>(</code><div class="inset_2cJr"><div><code>mixinName<!-- -->: </code><code class="blue_2Afy">string</code><code>,</code></div><div><code>mixin<!-- -->: </code><code class="blue_2Afy">Dictionary</code></div></div><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Manually register a Mixin see example at the <a href="#top">top of the page.</a></p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="RegisterMixinFromModule"><code style="text-decoration:none">RegisterMixinFromModule</code><a aria-hidden="true" class="hash-link" href="#RegisterMixinFromModule" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/Mixins.lua#L127"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Mixins<!-- -->.</code><code class="green_3LnD">RegisterMixinFromModule</code><code>(</code><code>mixinModule<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Instance" target="_blank" rel="noopener noreferrer">Instance<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD">&lt;</code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/class/ModuleScript" target="_blank" rel="noopener noreferrer">ModuleScript<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD">&gt;</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Requires the ModuleScript passed and requiers the Mixin.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="RegisterMultipleMixins"><code style="text-decoration:none">RegisterMultipleMixins</code><a aria-hidden="true" class="hash-link" href="#RegisterMultipleMixins" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/Mixins.lua#L143"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Mixins<!-- -->.</code><code class="green_3LnD">RegisterMultipleMixins</code><code>(</code><code>mixins<!-- -->: </code><code class="purple__nFc">{</code><code class="blue_2Afy">Dictionary</code><code class="purple__nFc">}</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Registers multiple Mixins.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="RegisterMultipleMixinsFromModules"><code style="text-decoration:none">RegisterMultipleMixinsFromModules</code><a aria-hidden="true" class="hash-link" href="#RegisterMultipleMixinsFromModules" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/Mixins.lua#L158"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Mixins<!-- -->.</code><code class="green_3LnD">RegisterMultipleMixinsFromModules</code><code>(</code><code>mixinModules<!-- -->: </code><code class="purple__nFc">{</code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Instance" target="_blank" rel="noopener noreferrer">Instance<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD">&lt;</code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/class/ModuleScript" target="_blank" rel="noopener noreferrer">ModuleScript<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="op_1JtD">&gt;</code><code class="purple__nFc">}</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Requires and registers multiple Mixin Modules.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="DoesClassHaveMixin"><code style="text-decoration:none">DoesClassHaveMixin</code><a aria-hidden="true" class="hash-link" href="#DoesClassHaveMixin" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/Mixins.lua#L177"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Mixins<!-- -->.</code><code class="green_3LnD">DoesClassHaveMixin</code><code>(</code><div class="inset_2cJr"><div><code>classAny<!-- -->: </code><code class="blue_2Afy">string</code><code class="op_1JtD"> | </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Class">Class</a></code><code>,</code></div><div><code>mixinName<!-- -->: </code><code class="blue_2Afy">string</code></div></div><code>) → </code><code class="blue_2Afy">boolean</code></div><div>
+<p>Checks if a Class has the Mixin being checked for.</p>
+</div><h3>Errors</h3><table class="errorTable_25fH"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Nonexistent Class</td><td>Occurs when the Class doesn&#x27;t exist</td></tr></tbody></table><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="DoesClassHaveAnyMixins"><code style="text-decoration:none">DoesClassHaveAnyMixins</code><a aria-hidden="true" class="hash-link" href="#DoesClassHaveAnyMixins" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/Mixins.lua#L193"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Mixins<!-- -->.</code><code class="green_3LnD">DoesClassHaveAnyMixins</code><code>(</code><div class="inset_2cJr"><div><code>classAny<!-- -->: </code><code class="blue_2Afy">string</code><code class="op_1JtD"> | </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Class">Class</a></code><code>,</code></div><div><code>mixins<!-- -->: </code><code class="purple__nFc">{</code><code class="blue_2Afy">string</code><code class="purple__nFc">}</code></div></div><code>) → </code><code class="blue_2Afy">boolean,</code><code class="blue_2Afy">table</code><span class="inlineDescription_17uy">-- <span>
+<p>the boolean is whether it had any of the mixins or not, the table is an array of which mixins it had</p>
+</span></span></div><div>
+<p>Checks if a Class has any of the mixins passed.</p>
+</div><h3>Errors</h3><table class="errorTable_25fH"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Nonexistent Class</td><td>Occurs when the Class doesn&#x27;t exist</td></tr></tbody></table><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="DoesClassHaveAllMixins"><code style="text-decoration:none">DoesClassHaveAllMixins</code><a aria-hidden="true" class="hash-link" href="#DoesClassHaveAllMixins" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/Mixins.lua#L220"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Mixins<!-- -->.</code><code class="green_3LnD">DoesClassHaveAllMixins</code><code>(</code><div class="inset_2cJr"><div><code>classAny<!-- -->: </code><code class="blue_2Afy">string</code><code class="op_1JtD"> | </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Class">Class</a></code><code>,</code></div><div><code>mixins<!-- -->: </code><code class="purple__nFc">{</code><code class="blue_2Afy">string</code><code class="purple__nFc">}</code></div></div><code>) → </code><code class="blue_2Afy">boolean</code></div><div>
+<p>Checks if a Class has all the mixins passed.</p>
+</div><h3>Errors</h3><table class="errorTable_25fH"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Nonexistent Class</td><td>Occurs when the Class doesn&#x27;t exist</td></tr></tbody></table><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="AddMixin"><code style="text-decoration:none">AddMixin</code><a aria-hidden="true" class="hash-link" href="#AddMixin" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/Mixins.lua#L251"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Mixins<!-- -->.</code><code class="green_3LnD">AddMixin</code><code>(</code><div class="inset_2cJr"><div><code>classAny<!-- -->: </code><code class="blue_2Afy">string</code><code class="op_1JtD"> | </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Class">Class</a></code><code>,</code></div><div><code>mixinName<!-- -->: </code><code class="blue_2Afy">string</code></div></div><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Adds a Mixin to a Class.</p>
+</div><h3>Errors</h3><table class="errorTable_25fH"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Nonexistent Class</td><td>Occurs when the Class doesn&#x27;t exist</td></tr><tr><td>Nonexistent Mixin</td><td>Occurs when the Class doesn&#x27;t exist</td></tr><tr><td>Mixin Apart of Class</td><td>Occurs when the Mixin is already apart of the Class</td></tr></tbody></table><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="AddMultipleMixins"><code style="text-decoration:none">AddMultipleMixins</code><a aria-hidden="true" class="hash-link" href="#AddMultipleMixins" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/Mixins.lua#L287"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Mixins<!-- -->.</code><code class="green_3LnD">AddMultipleMixins</code><code>(</code><div class="inset_2cJr"><div><code>classAny<!-- -->: </code><code class="blue_2Afy">string</code><code class="op_1JtD"> | </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Class">Class</a></code><code>,</code></div><div><code>mixins<!-- -->: </code><code class="purple__nFc">{</code><code class="blue_2Afy">string</code><code class="purple__nFc">}</code></div></div><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Adds multiple Mixins to a Class.</p>
+</div><h3>Errors</h3><table class="errorTable_25fH"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Nonexistent Class</td><td>Occurs when the Class doesn&#x27;t exist</td></tr><tr><td>Nonexistent Mixin</td><td>Occurs when the Class doesn&#x27;t exist</td></tr><tr><td>Mixin Apart of Class</td><td>Occurs when the Mixin is already apart of the Class</td></tr></tbody></table></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
+    &quot;functions&quot;: [
+        {
+            &quot;name&quot;: &quot;RegisterMixinFolder&quot;,
+            &quot;desc&quot;: &quot;Registers the folder as a valid location for finding Mixins.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;folder&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Instance&lt;Folder&gt;&quot;
+                }
+            ],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 102,
+                &quot;path&quot;: &quot;src/Mixins.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;RegisterMixin&quot;,
+            &quot;desc&quot;: &quot;Manually register a Mixin see example at the [top of the page.](#top)&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;mixinName&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;mixin&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Dictionary&quot;
+                }
+            ],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 114,
+                &quot;path&quot;: &quot;src/Mixins.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;RegisterMixinFromModule&quot;,
+            &quot;desc&quot;: &quot;Requires the ModuleScript passed and requiers the Mixin.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;mixinModule&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Instance&lt;ModuleScript&gt;&quot;
+                }
+            ],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 127,
+                &quot;path&quot;: &quot;src/Mixins.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;RegisterMultipleMixins&quot;,
+            &quot;desc&quot;: &quot;Registers multiple Mixins.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;mixins&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;{Dictionary}&quot;
+                }
+            ],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 143,
+                &quot;path&quot;: &quot;src/Mixins.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;RegisterMultipleMixinsFromModules&quot;,
+            &quot;desc&quot;: &quot;Requires and registers multiple Mixin Modules.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;mixinModules&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;{Instance&lt;ModuleScript&gt;}&quot;
+                }
+            ],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 158,
+                &quot;path&quot;: &quot;src/Mixins.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;DoesClassHaveMixin&quot;,
+            &quot;desc&quot;: &quot;Checks if a Class has the Mixin being checked for.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;classAny&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string | Class&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;mixinName&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;boolean&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;errors&quot;: [
+                {
+                    &quot;lua_type&quot;: &quot;Nonexistent Class&quot;,
+                    &quot;desc&quot;: &quot;Occurs when the Class doesn&#x27;t exist&quot;
+                }
+            ],
+            &quot;source&quot;: {
+                &quot;line&quot;: 177,
+                &quot;path&quot;: &quot;src/Mixins.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;DoesClassHaveAnyMixins&quot;,
+            &quot;desc&quot;: &quot;Checks if a Class has any of the mixins passed.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;classAny&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string | Class&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;mixins&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;{string}&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;the boolean is whether it had any of the mixins or not, the table is an array of which mixins it had&quot;,
+                    &quot;lua_type&quot;: &quot;boolean, table&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;errors&quot;: [
+                {
+                    &quot;lua_type&quot;: &quot;Nonexistent Class&quot;,
+                    &quot;desc&quot;: &quot;Occurs when the Class doesn&#x27;t exist&quot;
+                }
+            ],
+            &quot;source&quot;: {
+                &quot;line&quot;: 193,
+                &quot;path&quot;: &quot;src/Mixins.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;DoesClassHaveAllMixins&quot;,
+            &quot;desc&quot;: &quot;Checks if a Class has all the mixins passed.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;classAny&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string | Class&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;mixins&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;{string}&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;boolean&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;errors&quot;: [
+                {
+                    &quot;lua_type&quot;: &quot;Nonexistent Class&quot;,
+                    &quot;desc&quot;: &quot;Occurs when the Class doesn&#x27;t exist&quot;
+                }
+            ],
+            &quot;source&quot;: {
+                &quot;line&quot;: 220,
+                &quot;path&quot;: &quot;src/Mixins.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;AddMixin&quot;,
+            &quot;desc&quot;: &quot;Adds a Mixin to a Class.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;classAny&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string | Class&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;mixinName&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                }
+            ],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;errors&quot;: [
+                {
+                    &quot;lua_type&quot;: &quot;Nonexistent Class&quot;,
+                    &quot;desc&quot;: &quot;Occurs when the Class doesn&#x27;t exist&quot;
+                },
+                {
+                    &quot;lua_type&quot;: &quot;Nonexistent Mixin&quot;,
+                    &quot;desc&quot;: &quot;Occurs when the Class doesn&#x27;t exist&quot;
+                },
+                {
+                    &quot;lua_type&quot;: &quot;Mixin Apart of Class&quot;,
+                    &quot;desc&quot;: &quot;Occurs when the Mixin is already apart of the Class&quot;
+                }
+            ],
+            &quot;source&quot;: {
+                &quot;line&quot;: 251,
+                &quot;path&quot;: &quot;src/Mixins.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;AddMultipleMixins&quot;,
+            &quot;desc&quot;: &quot;Adds multiple Mixins to a Class.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;classAny&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string | Class&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;mixins&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;{string}&quot;
+                }
+            ],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;errors&quot;: [
+                {
+                    &quot;lua_type&quot;: &quot;Nonexistent Class&quot;,
+                    &quot;desc&quot;: &quot;Occurs when the Class doesn&#x27;t exist&quot;
+                },
+                {
+                    &quot;lua_type&quot;: &quot;Nonexistent Mixin&quot;,
+                    &quot;desc&quot;: &quot;Occurs when the Class doesn&#x27;t exist&quot;
+                },
+                {
+                    &quot;lua_type&quot;: &quot;Mixin Apart of Class&quot;,
+                    &quot;desc&quot;: &quot;Occurs when the Mixin is already apart of the Class&quot;
+                }
+            ],
+            &quot;source&quot;: {
+                &quot;line&quot;: 287,
+                &quot;path&quot;: &quot;src/Mixins.lua&quot;
+            }
+        }
+    ],
+    &quot;properties&quot;: [],
+    &quot;types&quot;: [],
+    &quot;name&quot;: &quot;Mixins&quot;,
+    &quot;desc&quot;: &quot;This module is used to register Mixins, add Mixins to classes, and check if classes have Mixins\n\n### Example\n```lua\n    -- To register Mixins\n    -- whenever you register a mixin folder, when adding a Mixin to a class, if the Mixin hasn&#x27;t already been cached\n    -- the folder registered (and every other folder registered) will be searched for the Mixin\n    Classy.Mixins.RegisterMixinFolder(path.to.mixin.folder)\n\n    -- registering mixins manually\n    local TestMixin = {}\n\n    function TestMixin.Add(class)\n        assert(class.TestMethod == nil, \&quot;class already has a &#x27;TestMethod&#x27; method\&quot;)\n        class.TestMethod = TestMixin.TestMethod\n    end\n\n    function TestMixin.TestMethod()\n        print(\&quot;test\&quot;)\n    end\n\n    Classy.Mixins.RegisterMixin(\&quot;TestMixin\&quot;, TestMixin)\n\n    -- registering a mixin in a module\n    Classy.Mixins.RegisterMixinFromModule(path.to.module.script)\n\n    -- adding a mixin to a class\n\n    local NewClass = Classy.NewClass({\n        ClassName = \&quot;New\&quot;;\n    }) -- you could alternatively pass the names of the Mixins you want to add as a table for the 2nd argument of the NewClass and NewSubclass methods\n    Classy.Mixins.AddMixin(NewClass, \&quot;TestMixin\&quot;)\n\n    -- It&#x27;s also worth noting that passing a object of a class as the first parameter to AddMixin, will add it to the entire class, not the object itself.\n\n    local newObject = NewClass.new()\n    NewClass.TestMethod()\n    newObject.TestMethod()\n\n    -- you can even use mixins on any table\n    local someTable = {}\n    Classy.Mixins.AddMixin(someTable, \&quot;TestMixin\&quot;)\n\n    someTable.TestMethod()\n```&quot;,
+    &quot;source&quot;: {
+        &quot;line&quot;: 53,
+        &quot;path&quot;: &quot;src/Mixins.lua&quot;
+    }
+}</pre></details></div><div class="col col--3"><div class="tableOfContents_35-E thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#AddMixin" class="table-of-contents__link toc-highlight">.AddMixin</a></li><li><a href="#AddMultipleMixins" class="table-of-contents__link toc-highlight">.AddMultipleMixins</a></li><li><a href="#DoesClassHaveAllMixins" class="table-of-contents__link toc-highlight">.DoesClassHaveAllMixins</a></li><li><a href="#DoesClassHaveAnyMixins" class="table-of-contents__link toc-highlight">.DoesClassHaveAnyMixins</a></li><li><a href="#DoesClassHaveMixin" class="table-of-contents__link toc-highlight">.DoesClassHaveMixin</a></li><li><a href="#RegisterMixin" class="table-of-contents__link toc-highlight">.RegisterMixin</a></li><li><a href="#RegisterMixinFolder" class="table-of-contents__link toc-highlight">.RegisterMixinFolder</a></li><li><a href="#RegisterMixinFromModule" class="table-of-contents__link toc-highlight">.RegisterMixinFromModule</a></li><li><a href="#RegisterMultipleMixins" class="table-of-contents__link toc-highlight">.RegisterMultipleMixins</a></li><li><a href="#RegisterMultipleMixinsFromModules" class="table-of-contents__link toc-highlight">.RegisterMultipleMixinsFromModules</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2022 dev-fyuusha. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
+<script src="/Classy/assets/js/runtime~main.04390c91.js"></script>
+<script src="/Classy/assets/js/main.631b27b7.js"></script>
+</body>
+</html>

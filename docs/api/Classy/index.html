@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="generator" content="Docusaurus v2.0.0-beta.9">
+<title data-react-helmet="true">Classy | Classy</title><meta data-react-helmet="true" property="og:title" content="Classy | Classy"><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="description" content="This is the top level of Classy, where you access everything you need to create classes.  
+Classy is a library to make it easier to create classes and make them easier to read.  
+Classy has the ability to create subclasses and add Mixins for component based programming.
+
+### Restricted Keywords
+- Super
+- new
+- Destroy
+- _mixins
+- _internallyDestroyed
+- _isInternallyDestroyed
+- _isObject
+
+These keywords are used internally by Classy for managing your classes.  
+You&#x27;re allowed to use and access these fields and methods of your classes, the only exceptions are `_isInternallyDestroyed` and `_internallyDestroyed` (it is already used internally when `Destroy` is called).  
+To learn more about these keywords, please read the documentation for [Class](https://dev-fyuusha.github.io/Chain/api/Class).
+
+### Example
+```lua
+-- Simple class and subclass
+local Car = Classy.NewClass({
+    ClassName = &quot;Car&quot;;
+
+    init = function(self, maxSpeed, color)
+        self.MaxSpeed = maxSpeed or 32
+        self.Color = color or Color3.fromRGB(255, 0, 0)
+
+        print(&quot;car initialized&quot;)
+    end;
+
+    terminate = function(self)
+        print(&quot;car destroyed&quot;)
+    end;
+
+    Honk = function(self)
+        print(self.ClassName, &quot;BEEP&quot;)
+    end;
+})
+
+local greenCar = Car.new(120, Color3.fromRGB(0, 255, 0))
+greenCar:Honk()
+
+local Truck = Classy.NewSubclass({
+    ClassName = &quot;Truck&quot;;
+}, &quot;Car&quot;) -- you could also alternatively pass the class itself
+
+function Truck:init(maxSpeed, color, tireAmount)
+    self.TireAmount = tireAmount
+    print(&quot;truck initialized&quot;)
+end
+
+function Truck:terminate()
+    print(&quot;truck destroyed&quot;)
+end
+
+local semiTruck = Truck.new(90, Color3.fromRGB(0, 0, 255), 18)
+semiTruck:Honk()
+
+greenCar:Destroy()
+semiTruck:Destroy()
+
+local pickupTruck = Classy.NewObjectOfClass(&quot;Truck&quot;, 140, Color3.fromRGB(255, 0, 255), 4)
+pickupTruck:Honk()
+pickupTruck:Destroy()
+
+
+-- Mixin Addition
+-- With Mixins you can have them automatically picked up by Classy by putting them in the ClassMixins folder as Module Scripts
+-- For more information on Mixins and how to use them check the Mixins ModuleScript
+local VehicleBoostMixin = {}
+
+
+function VehicleBoostMixin.Add(class)
+    assert(class.Boost == nil, &quot;class already has a &#x27;Boost&#x27; method&quot;)
+    class.Boost = VehicleBoostMixin.Boost
+end
+
+
+function VehicleBoostMixin:Boost()
+    local oldMaxSpeed = self.MaxSpeed
+    self.MaxSpeed = oldMaxSpeed * 2
+    print(&quot;VROOOOOOMMM&quot;)
+    task.delay(1, function()
+        self.MaxSpeed = oldMaxSpeed
+    end)
+end
+
+Classy.Mixins.RegisterMixin(&quot;VehicleBoostMixin&quot;, VehicleBoostMixin)
+
+-- In another Script
+local fastCar = Car.new(160, Color3.fromRGB(255, 255, 255))
+
+-- you could alternatively pass the names of the Mixins you want to add as a table for the 2nd argument of the NewClass and NewSubclass methods
+Classy.Mixins.AddMixin(Car, &quot;VehicleBoostMixin&quot;) -- you can even use this on a regular table
+
+-- It&#x27;s also worth noting that passing a object of a class as the first parameter to AddMixin, will add it to the entire class, not the object itself.
+
+fastCar:Boost()
+fastCar:Destroy()
+```"><meta data-react-helmet="true" property="og:description" content="This is the top level of Classy, where you access everything you need to create classes.  
+Classy is a library to make it easier to create classes and make them easier to read.  
+Classy has the ability to create subclasses and add Mixins for component based programming.
+
+### Restricted Keywords
+- Super
+- new
+- Destroy
+- _mixins
+- _internallyDestroyed
+- _isInternallyDestroyed
+- _isObject
+
+These keywords are used internally by Classy for managing your classes.  
+You&#x27;re allowed to use and access these fields and methods of your classes, the only exceptions are `_isInternallyDestroyed` and `_internallyDestroyed` (it is already used internally when `Destroy` is called).  
+To learn more about these keywords, please read the documentation for [Class](https://dev-fyuusha.github.io/Chain/api/Class).
+
+### Example
+```lua
+-- Simple class and subclass
+local Car = Classy.NewClass({
+    ClassName = &quot;Car&quot;;
+
+    init = function(self, maxSpeed, color)
+        self.MaxSpeed = maxSpeed or 32
+        self.Color = color or Color3.fromRGB(255, 0, 0)
+
+        print(&quot;car initialized&quot;)
+    end;
+
+    terminate = function(self)
+        print(&quot;car destroyed&quot;)
+    end;
+
+    Honk = function(self)
+        print(self.ClassName, &quot;BEEP&quot;)
+    end;
+})
+
+local greenCar = Car.new(120, Color3.fromRGB(0, 255, 0))
+greenCar:Honk()
+
+local Truck = Classy.NewSubclass({
+    ClassName = &quot;Truck&quot;;
+}, &quot;Car&quot;) -- you could also alternatively pass the class itself
+
+function Truck:init(maxSpeed, color, tireAmount)
+    self.TireAmount = tireAmount
+    print(&quot;truck initialized&quot;)
+end
+
+function Truck:terminate()
+    print(&quot;truck destroyed&quot;)
+end
+
+local semiTruck = Truck.new(90, Color3.fromRGB(0, 0, 255), 18)
+semiTruck:Honk()
+
+greenCar:Destroy()
+semiTruck:Destroy()
+
+local pickupTruck = Classy.NewObjectOfClass(&quot;Truck&quot;, 140, Color3.fromRGB(255, 0, 255), 4)
+pickupTruck:Honk()
+pickupTruck:Destroy()
+
+
+-- Mixin Addition
+-- With Mixins you can have them automatically picked up by Classy by putting them in the ClassMixins folder as Module Scripts
+-- For more information on Mixins and how to use them check the Mixins ModuleScript
+local VehicleBoostMixin = {}
+
+
+function VehicleBoostMixin.Add(class)
+    assert(class.Boost == nil, &quot;class already has a &#x27;Boost&#x27; method&quot;)
+    class.Boost = VehicleBoostMixin.Boost
+end
+
+
+function VehicleBoostMixin:Boost()
+    local oldMaxSpeed = self.MaxSpeed
+    self.MaxSpeed = oldMaxSpeed * 2
+    print(&quot;VROOOOOOMMM&quot;)
+    task.delay(1, function()
+        self.MaxSpeed = oldMaxSpeed
+    end)
+end
+
+Classy.Mixins.RegisterMixin(&quot;VehicleBoostMixin&quot;, VehicleBoostMixin)
+
+-- In another Script
+local fastCar = Car.new(160, Color3.fromRGB(255, 255, 255))
+
+-- you could alternatively pass the names of the Mixins you want to add as a table for the 2nd argument of the NewClass and NewSubclass methods
+Classy.Mixins.AddMixin(Car, &quot;VehicleBoostMixin&quot;) -- you can even use this on a regular table
+
+-- It&#x27;s also worth noting that passing a object of a class as the first parameter to AddMixin, will add it to the entire class, not the object itself.
+
+fastCar:Boost()
+fastCar:Destroy()
+```"><meta data-react-helmet="true" property="og:url" content="https://dev-fyuusha.github.io/Classy/api/Classy"><meta data-react-helmet="true" name="docusaurus_locale" content="en"><meta data-react-helmet="true" name="docusaurus_tag" content="default"><link data-react-helmet="true" rel="canonical" href="https://dev-fyuusha.github.io/Classy/api/Classy"><link data-react-helmet="true" rel="alternate" href="https://dev-fyuusha.github.io/Classy/api/Classy" hreflang="en"><link data-react-helmet="true" rel="alternate" href="https://dev-fyuusha.github.io/Classy/api/Classy" hreflang="x-default"><link rel="stylesheet" href="/Classy/assets/css/styles.06f234af.css">
+<link rel="preload" href="/Classy/assets/js/runtime~main.04390c91.js" as="script">
+<link rel="preload" href="/Classy/assets/js/main.631b27b7.js" as="script">
+</head>
+<body>
+<script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,e("light"))}()</script><div id="__docusaurus">
+<div><a href="#" class="skipToContent_1oUP">Skip to main content</a></div><nav class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Navigation bar toggle" class="navbar__toggle clean-btn" type="button" tabindex="0"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/Classy/"><b class="navbar__title">Classy</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/Classy/api/">API</a></div><div class="navbar__items navbar__items--right"><a href="https://github.com/dev-fyuusha/Classy" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link"><span>GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_3J9K"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a><div class="toggle_71bT toggle_3Zt9 toggleDisabled_3cF-"><div class="toggleTrack_32Fl" role="button" tabindex="-1"><div class="toggleTrackCheck_3lV7"><span class="toggleIcon_O4iE">🌜</span></div><div class="toggleTrackX_S2yS"><span class="toggleIcon_O4iE">🌞</span></div><div class="toggleTrackThumb_xI_Z"></div></div><input type="checkbox" class="toggleScreenReader_28Tw" aria-label="Switch between dark and light mode"></div><div class="navbar__search"><span aria-label="expand searchbar" role="button" class="search-icon" tabindex="0"></span><input type="search" id="search_input_react" placeholder="Press S to Search..." aria-label="Search" class="navbar__search-input search-bar"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div class="main-wrapper docPageContainer_2Kz0"><div class="docPage_1bdk"><div class="docSidebarContainer_1ykS"><div class="sidebar_15mo"><nav class="menu thin-scrollbar menu_Bmed"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><a class="menu__link menu__link--sublist menu__link--active" href="#">Classy</a><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/Classy/api/Classy">​Classy</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/Classy/api/Class">​Class</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/Classy/api/Mixins">​Mixins</a></li></ul></li></ul></nav><button type="button" title="Collapse sidebar" aria-label="Collapse sidebar" class="button button--secondary button--outline collapseSidebarButton_1CGd"><svg width="20" height="20" aria-hidden="true" class="collapseSidebarButtonIcon_3E-R"><g fill="#7a7a7a"><path d="M9.992 10.023c0 .2-.062.399-.172.547l-4.996 7.492a.982.982 0 01-.828.454H1c-.55 0-1-.453-1-1 0-.2.059-.403.168-.551l4.629-6.942L.168 3.078A.939.939 0 010 2.528c0-.548.45-.997 1-.997h2.996c.352 0 .649.18.828.45L9.82 9.472c.11.148.172.347.172.55zm0 0"></path><path d="M19.98 10.023c0 .2-.058.399-.168.547l-4.996 7.492a.987.987 0 01-.828.454h-3c-.547 0-.996-.453-.996-1 0-.2.059-.403.168-.551l4.625-6.942-4.625-6.945a.939.939 0 01-.168-.55 1 1 0 01.996-.997h3c.348 0 .649.18.828.45l4.996 7.492c.11.148.168.347.168.55zm0 0"></path></g></svg></button></div></div><main class="docMainContainer_28N5"><div class="container padding-vert--lg"><div class="row"><div class="col docItemCol_3WPG"><div class="docItemContainer_3XDu"><article><div class="member_qHIL markdown"><div class="tocCollapsible_1PrD theme-doc-toc-mobile tocMobile_3ryM"><button type="button" class="clean-btn tocCollapsibleButton_2O1e">On this page</button></div><header><h1 class="docTitle_1ddc" style="text-decoration:none"><span style="display:inline-block">Classy</span></h1><div class="luaClassTags_2Zrs"></div><div>
+<p>This is the top level of Classy, where you access everything you need to create classes.<br>Classy is a library to make it easier to create classes and make them easier to read.<br>Classy has the ability to create subclasses and add Mixins for component based programming.</p>
+<h3>Restricted Keywords</h3>
+<ul>
+  <li>Super</li>
+  <li>new</li>
+  <li>Destroy</li>
+  <li>_mixins</li>
+  <li>_internallyDestroyed</li>
+  <li>_isInternallyDestroyed</li>
+  <li>_isObject</li>
+</ul>
+<p>These keywords are used internally by Classy for managing your classes.<br>You're allowed to use and access these fields and methods of your classes, the only exceptions are <code>_isInternallyDestroyed</code> and <code>_internallyDestroyed</code> (it is already used internally when <code>Destroy</code> is called).<br>To learn more about these keywords, please read the documentation for <a href="https://dev-fyuusha.github.io/Chain/api/Class" target="_blank">Class</a>.</p>
+<h3>Example</h3>
+<pre class="language-lua"><code class="language-lua"><span class="token comment">-- Simple class and subclass</span>
+<span class="token keyword">local</span> Car <span class="token operator">=</span> Classy<span class="token punctuation">.</span><span class="token function">NewClass</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    ClassName <span class="token operator">=</span> <span class="token string">"Car"</span><span class="token punctuation">;</span>
+
+    init <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> maxSpeed<span class="token punctuation">,</span> color<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>MaxSpeed <span class="token operator">=</span> maxSpeed <span class="token keyword">or</span> <span class="token number">32</span>
+        self<span class="token punctuation">.</span>Color <span class="token operator">=</span> color <span class="token keyword">or</span> Color3<span class="token punctuation">.</span><span class="token function">fromRGB</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+
+        <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"car initialized"</span><span class="token punctuation">)</span>
+    <span class="token keyword">end</span><span class="token punctuation">;</span>
+
+    terminate <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+        <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"car destroyed"</span><span class="token punctuation">)</span>
+    <span class="token keyword">end</span><span class="token punctuation">;</span>
+
+    Honk <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+        <span class="token function">print</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>ClassName<span class="token punctuation">,</span> <span class="token string">"BEEP"</span><span class="token punctuation">)</span>
+    <span class="token keyword">end</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">local</span> greenCar <span class="token operator">=</span> Car<span class="token punctuation">.</span><span class="token function">new</span><span class="token punctuation">(</span><span class="token number">120</span><span class="token punctuation">,</span> Color3<span class="token punctuation">.</span><span class="token function">fromRGB</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+greenCar<span class="token punctuation">:</span><span class="token function">Honk</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">local</span> Truck <span class="token operator">=</span> Classy<span class="token punctuation">.</span><span class="token function">NewSubclass</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    ClassName <span class="token operator">=</span> <span class="token string">"Truck"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"Car"</span><span class="token punctuation">)</span> <span class="token comment">-- you could also alternatively pass the class itself</span>
+
+<span class="token keyword">function</span> Truck<span class="token punctuation">:</span><span class="token function">init</span><span class="token punctuation">(</span>maxSpeed<span class="token punctuation">,</span> color<span class="token punctuation">,</span> tireAmount<span class="token punctuation">)</span>
+    self<span class="token punctuation">.</span>TireAmount <span class="token operator">=</span> tireAmount
+    <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"truck initialized"</span><span class="token punctuation">)</span>
+<span class="token keyword">end</span>
+
+<span class="token keyword">function</span> Truck<span class="token punctuation">:</span><span class="token function">terminate</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"truck destroyed"</span><span class="token punctuation">)</span>
+<span class="token keyword">end</span>
+
+<span class="token keyword">local</span> semiTruck <span class="token operator">=</span> Truck<span class="token punctuation">.</span><span class="token function">new</span><span class="token punctuation">(</span><span class="token number">90</span><span class="token punctuation">,</span> Color3<span class="token punctuation">.</span><span class="token function">fromRGB</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">)</span>
+semiTruck<span class="token punctuation">:</span><span class="token function">Honk</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+greenCar<span class="token punctuation">:</span><span class="token function">Destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+semiTruck<span class="token punctuation">:</span><span class="token function">Destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">local</span> pickupTruck <span class="token operator">=</span> Classy<span class="token punctuation">.</span><span class="token function">NewObjectOfClass</span><span class="token punctuation">(</span><span class="token string">"Truck"</span><span class="token punctuation">,</span> <span class="token number">140</span><span class="token punctuation">,</span> Color3<span class="token punctuation">.</span><span class="token function">fromRGB</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+pickupTruck<span class="token punctuation">:</span><span class="token function">Honk</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+pickupTruck<span class="token punctuation">:</span><span class="token function">Destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+
+<span class="token comment">-- Mixin Addition</span>
+<span class="token comment">-- With Mixins you can have them automatically picked up by Classy by putting them in the ClassMixins folder as Module Scripts</span>
+<span class="token comment">-- For more information on Mixins and how to use them check the Mixins ModuleScript</span>
+<span class="token keyword">local</span> VehicleBoostMixin <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+
+<span class="token keyword">function</span> VehicleBoostMixin<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>class<span class="token punctuation">)</span>
+    <span class="token function">assert</span><span class="token punctuation">(</span>class<span class="token punctuation">.</span>Boost <span class="token operator">==</span> <span class="token keyword">nil</span><span class="token punctuation">,</span> <span class="token string">"class already has a 'Boost' method"</span><span class="token punctuation">)</span>
+    class<span class="token punctuation">.</span>Boost <span class="token operator">=</span> VehicleBoostMixin<span class="token punctuation">.</span>Boost
+<span class="token keyword">end</span>
+
+
+<span class="token keyword">function</span> VehicleBoostMixin<span class="token punctuation">:</span><span class="token function">Boost</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">local</span> oldMaxSpeed <span class="token operator">=</span> self<span class="token punctuation">.</span>MaxSpeed
+    self<span class="token punctuation">.</span>MaxSpeed <span class="token operator">=</span> oldMaxSpeed <span class="token operator">*</span> <span class="token number">2</span>
+    <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"VROOOOOOMMM"</span><span class="token punctuation">)</span>
+    task<span class="token punctuation">.</span><span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>MaxSpeed <span class="token operator">=</span> oldMaxSpeed
+    <span class="token keyword">end</span><span class="token punctuation">)</span>
+<span class="token keyword">end</span>
+
+Classy<span class="token punctuation">.</span>Mixins<span class="token punctuation">.</span><span class="token function">RegisterMixin</span><span class="token punctuation">(</span><span class="token string">"VehicleBoostMixin"</span><span class="token punctuation">,</span> VehicleBoostMixin<span class="token punctuation">)</span>
+
+<span class="token comment">-- In another Script</span>
+<span class="token keyword">local</span> fastCar <span class="token operator">=</span> Car<span class="token punctuation">.</span><span class="token function">new</span><span class="token punctuation">(</span><span class="token number">160</span><span class="token punctuation">,</span> Color3<span class="token punctuation">.</span><span class="token function">fromRGB</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">-- you could alternatively pass the names of the Mixins you want to add as a table for the 2nd argument of the NewClass and NewSubclass methods</span>
+Classy<span class="token punctuation">.</span>Mixins<span class="token punctuation">.</span><span class="token function">AddMixin</span><span class="token punctuation">(</span>Car<span class="token punctuation">,</span> <span class="token string">"VehicleBoostMixin"</span><span class="token punctuation">)</span> <span class="token comment">-- you can even use this on a regular table</span>
+
+<span class="token comment">-- It's also worth noting that passing a object of a class as the first parameter to AddMixin, will add it to the entire class, not the object itself.</span>
+
+fastCar<span class="token punctuation">:</span><span class="token function">Boost</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+fastCar<span class="token punctuation">:</span><span class="token function">Destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+</div></header><h2 class="anchor anchorWithStickyNavbar_31ik" id="types">Types<a aria-hidden="true" class="hash-link" href="#types" title="Direct link to heading">​</a></h2><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="ClassInfo"><code style="text-decoration:none">ClassInfo</code><a aria-hidden="true" class="hash-link" href="#ClassInfo" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/init.lua#L145"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code class="purple__nFc">interface</code> <code>ClassInfo<!-- --> <!-- -->{</code><div class="inset_2cJr"><div><code>ClassName<!-- -->: </code><code class="blue_2Afy">string</code><span class="inlineDescription_17uy">-- <span>
+<p>The name of the class</p>
+</span></span></div><div><code>terminate<!-- -->: </code><code class="blue_2Afy">function?</code><span class="inlineDescription_17uy">-- <span>
+<p>[Optional] The method that is called when destroying an object of the class</p>
+</span></span></div><div><code>init<!-- -->: </code><code class="blue_2Afy">function?</code><span class="inlineDescription_17uy">-- <span>
+<p>[Optional] The method that is called when creating an object of the class</p>
+</span></span></div></div><code>}</code></div><div>
+<p>
+  This is what you should be sending when creating a new class or subclass.
+  It is to be noted, however, that you can define <code>terminate</code> and <code>init</code> outside of this table by referring to your class and defining it, like so:
+</p>
+<pre class="language-lua"><code class="language-lua">    <span class="token keyword">local</span> newClass <span class="token operator">=</span> Classy<span class="token punctuation">.</span><span class="token function">NewClass</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        ClassName <span class="token operator">=</span> <span class="token string">"newClass"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token comment">--[[
+        it is to be noted that any arguments you pass to `new` on newClass
+        and `Destroy` on individual objects will be passed to init and terminate respectively.
+    --]]</span>
+    <span class="token keyword">function</span> newClass<span class="token punctuation">:</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">end</span>
+
+    <span class="token keyword">function</span> newClass<span class="token punctuation">:</span><span class="token function">terminate</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">end</span>
+</code></pre>
+<p>You can also define static fields in the ClassInfo.</p>
+</div><h2 class="anchor anchorWithStickyNavbar_31ik" id="properties">Properties<a aria-hidden="true" class="hash-link" href="#properties" title="Direct link to heading">​</a></h2><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="Mixins"><code style="text-decoration:none">Mixins</code><a aria-hidden="true" class="hash-link" href="#Mixins" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/init.lua#L115"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Classy<!-- -->.<!-- -->Mixins<!-- -->:<!-- --> </code> <code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Mixins">Mixins</a></code></div><div>
+<p>
+  This is a reference to the Mixins table, where you can register mixins, add mixins to a class, and more.
+  For full documentation refer to the <a href="https://dev-fyuusha.github.io/Chain/api/Mixins" target="_blank">Mixins</a> documentation
+</p>
+</div><h2 class="anchor anchorWithStickyNavbar_31ik" id="functions">Functions<a aria-hidden="true" class="hash-link" href="#functions" title="Direct link to heading">​</a></h2><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="NewSubclass"><code style="text-decoration:none">NewSubclass</code><a aria-hidden="true" class="hash-link" href="#NewSubclass" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/init.lua#L180"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Classy<!-- -->.</code><code class="green_3LnD">NewSubclass</code><code>(</code><div class="inset_2cJr"><div><code>subclassInfo<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Classy#ClassInfo">ClassInfo</a></code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The info for the class (see <a href="#ClassInfo">ClassInfo</a>)</p>
+</span></span></div><div><code>superclassAny<!-- -->: </code><code class="blue_2Afy">string</code><code class="op_1JtD"> | </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Class">Class</a></code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The class that this one will be inheriting from</p>
+</span></span></div><div><code>mixins<!-- -->: </code><code class="purple__nFc">{</code><code class="blue_2Afy">string</code><code class="purple__nFc">}</code><code class="blue_2Afy">?</code><span class="inlineDescription_17uy">-- <span>
+<p>A table of mixins to add</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Class">Class</a></code></div><div>
+<p>This creates a new subclass of an already existing class.</p>
+</div><h3>Errors</h3><table class="errorTable_25fH"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Nonexistent Superclass</td><td>Occurs when the Superclass passed doesn&#x27;t exist</td></tr></tbody></table><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="NewClass"><code style="text-decoration:none">NewClass</code><a aria-hidden="true" class="hash-link" href="#NewClass" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/init.lua#L206"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Classy<!-- -->.</code><code class="green_3LnD">NewClass</code><code>(</code><div class="inset_2cJr"><div><code>classInfo<!-- -->: </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Classy#ClassInfo">ClassInfo</a></code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>The info for the class (see <a href="#ClassInfo">ClassInfo</a>)</p>
+</span></span></div><div><code>mixins<!-- -->: </code><code class="purple__nFc">{</code><code class="blue_2Afy">string</code><code class="purple__nFc">}</code><code class="blue_2Afy">?</code><code>,</code><span class="inlineDescription_17uy">-- <span>
+<p>A table of mixins to add</p>
+</span></span></div><div><code>superclassAny<!-- -->: </code><code class="blue_2Afy">string</code><code class="op_1JtD"> | </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Class">Class</a></code><span class="inlineDescription_17uy">-- <span>
+<p>The class that this one will be inheriting from</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Class">Class</a></code></div><div>
+<p>This creates a new class.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="NewObjectOfClass"><code style="text-decoration:none">NewObjectOfClass</code><a aria-hidden="true" class="hash-link" href="#NewObjectOfClass" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/init.lua#L234"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Classy<!-- -->.</code><code class="green_3LnD">NewObjectOfClass</code><code>(</code><div class="inset_2cJr"><div><code>className<!-- -->: </code><code class="blue_2Afy">string</code><code>,</code></div><div><code>...<!-- -->: </code><code class="blue_2Afy">tuple?</code><span class="inlineDescription_17uy">-- <span>
+<p>this will pass any arguments you wish to pass to the <a href="https://dev-fyuusha.github.io/Chain/api/Class" target="_blank">instantiation</a> of the class</p>
+</span></span></div></div><code>) → </code><code class="blue_2Afy">Object</code><code class="op_1JtD">&lt;</code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Class">Class</a></code><code class="op_1JtD">&gt;</code></div><div>
+<p>This creates a object of an already existing class.</p>
+</div><div class="divider_3z1R"></div><h3 class="anchor anchorWithStickyNavbar_31ik" id="GetClass"><code style="text-decoration:none">GetClass</code><a aria-hidden="true" class="hash-link" href="#GetClass" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_1UH0"><a class="sourceButton_2aE5" href="https://github.com/dev-fyuusha/Classy/blob/master/src/init.lua#L252"><div class="sourceButtonText_monK">&lt;/&gt;</div></a></div><div class="memberString_P8-X"><code>Classy<!-- -->.</code><code class="green_3LnD">GetClass</code><code>(</code><code>className<!-- -->: </code><code class="blue_2Afy">string</code><code>) → </code><code class="blue_2Afy"><a style="text-decoration:underline;color:inherit" href="/Classy/api/Class">Class</a></code></div><div>
+<p>This gets a class by its class name.</p>
+</div><h3>Errors</h3><table class="errorTable_25fH"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Nonexistent Class</td><td>Occurs when the class couldn&#x27;t be found</td></tr></tbody></table></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
+    &quot;functions&quot;: [
+        {
+            &quot;name&quot;: &quot;NewSubclass&quot;,
+            &quot;desc&quot;: &quot;This creates a new subclass of an already existing class.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;subclassInfo&quot;,
+                    &quot;desc&quot;: &quot;The info for the class (see [ClassInfo](#ClassInfo))&quot;,
+                    &quot;lua_type&quot;: &quot;ClassInfo&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;superclassAny&quot;,
+                    &quot;desc&quot;: &quot;The class that this one will be inheriting from&quot;,
+                    &quot;lua_type&quot;: &quot;string | Class&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;mixins&quot;,
+                    &quot;desc&quot;: &quot;A table of mixins to add&quot;,
+                    &quot;lua_type&quot;: &quot;{string}?&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Class&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;errors&quot;: [
+                {
+                    &quot;lua_type&quot;: &quot;Nonexistent Superclass&quot;,
+                    &quot;desc&quot;: &quot;Occurs when the Superclass passed doesn&#x27;t exist&quot;
+                }
+            ],
+            &quot;source&quot;: {
+                &quot;line&quot;: 180,
+                &quot;path&quot;: &quot;src/init.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;NewClass&quot;,
+            &quot;desc&quot;: &quot;This creates a new class.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;classInfo&quot;,
+                    &quot;desc&quot;: &quot;The info for the class (see [ClassInfo](#ClassInfo))&quot;,
+                    &quot;lua_type&quot;: &quot;ClassInfo&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;mixins&quot;,
+                    &quot;desc&quot;: &quot;A table of mixins to add&quot;,
+                    &quot;lua_type&quot;: &quot;{string}?&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;superclassAny&quot;,
+                    &quot;desc&quot;: &quot;The class that this one will be inheriting from&quot;,
+                    &quot;lua_type&quot;: &quot;string | Class&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Class&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 206,
+                &quot;path&quot;: &quot;src/init.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;NewObjectOfClass&quot;,
+            &quot;desc&quot;: &quot;This creates a object of an already existing class.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;className&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;...&quot;,
+                    &quot;desc&quot;: &quot;this will pass any arguments you wish to pass to the [instantiation](https://dev-fyuusha.github.io/Chain/api/Class) of the class&quot;,
+                    &quot;lua_type&quot;: &quot;tuple?&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Object&lt;Class&gt;&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 234,
+                &quot;path&quot;: &quot;src/init.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;GetClass&quot;,
+            &quot;desc&quot;: &quot;This gets a class by its class name.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;className&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Class&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;errors&quot;: [
+                {
+                    &quot;lua_type&quot;: &quot;Nonexistent Class&quot;,
+                    &quot;desc&quot;: &quot;Occurs when the class couldn&#x27;t be found&quot;
+                }
+            ],
+            &quot;source&quot;: {
+                &quot;line&quot;: 252,
+                &quot;path&quot;: &quot;src/init.lua&quot;
+            }
+        }
+    ],
+    &quot;properties&quot;: [
+        {
+            &quot;name&quot;: &quot;Mixins&quot;,
+            &quot;desc&quot;: &quot;This is a reference to the Mixins table, where you can register mixins, add mixins to a class, and more.\nFor full documentation refer to the [Mixins](https://dev-fyuusha.github.io/Chain/api/Mixins) documentation&quot;,
+            &quot;lua_type&quot;: &quot;Mixins&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 115,
+                &quot;path&quot;: &quot;src/init.lua&quot;
+            }
+        }
+    ],
+    &quot;types&quot;: [
+        {
+            &quot;name&quot;: &quot;ClassInfo&quot;,
+            &quot;desc&quot;: &quot;This is what you should be sending when creating a new class or subclass.\nIt is to be noted, however, that you can define `terminate` and `init` outside of this table by referring to your class and defining it, like so:\n```lua\n    local newClass = Classy.NewClass({\n        ClassName = \&quot;newClass\&quot;\n    })\n\n    --[[\n        it is to be noted that any arguments you pass to `new` on newClass\n        and `Destroy` on individual objects will be passed to init and terminate respectively.\n    --]]\n    function newClass:init()\n\n    end\n\n    function newClass:terminate()\n\n    end\n```\n\nYou can also define static fields in the ClassInfo.&quot;,
+            &quot;fields&quot;: [
+                {
+                    &quot;name&quot;: &quot;ClassName&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;,
+                    &quot;desc&quot;: &quot;The name of the class&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;terminate&quot;,
+                    &quot;lua_type&quot;: &quot;function?&quot;,
+                    &quot;desc&quot;: &quot;[Optional] The method that is called when destroying an object of the class&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;init&quot;,
+                    &quot;lua_type&quot;: &quot;function?&quot;,
+                    &quot;desc&quot;: &quot;[Optional] The method that is called when creating an object of the class&quot;
+                }
+            ],
+            &quot;source&quot;: {
+                &quot;line&quot;: 145,
+                &quot;path&quot;: &quot;src/init.lua&quot;
+            }
+        }
+    ],
+    &quot;name&quot;: &quot;Classy&quot;,
+    &quot;desc&quot;: &quot;This is the top level of Classy, where you access everything you need to create classes.  \nClassy is a library to make it easier to create classes and make them easier to read.  \nClassy has the ability to create subclasses and add Mixins for component based programming.\n\n### Restricted Keywords\n- Super\n- new\n- Destroy\n- _mixins\n- _internallyDestroyed\n- _isInternallyDestroyed\n- _isObject\n\nThese keywords are used internally by Classy for managing your classes.  \nYou&#x27;re allowed to use and access these fields and methods of your classes, the only exceptions are `_isInternallyDestroyed` and `_internallyDestroyed` (it is already used internally when `Destroy` is called).  \nTo learn more about these keywords, please read the documentation for [Class](https://dev-fyuusha.github.io/Chain/api/Class).\n\n### Example\n```lua\n-- Simple class and subclass\nlocal Car = Classy.NewClass({\n    ClassName = \&quot;Car\&quot;;\n\n    init = function(self, maxSpeed, color)\n        self.MaxSpeed = maxSpeed or 32\n        self.Color = color or Color3.fromRGB(255, 0, 0)\n\n        print(\&quot;car initialized\&quot;)\n    end;\n\n    terminate = function(self)\n        print(\&quot;car destroyed\&quot;)\n    end;\n\n    Honk = function(self)\n        print(self.ClassName, \&quot;BEEP\&quot;)\n    end;\n})\n\nlocal greenCar = Car.new(120, Color3.fromRGB(0, 255, 0))\ngreenCar:Honk()\n\nlocal Truck = Classy.NewSubclass({\n    ClassName = \&quot;Truck\&quot;;\n}, \&quot;Car\&quot;) -- you could also alternatively pass the class itself\n\nfunction Truck:init(maxSpeed, color, tireAmount)\n    self.TireAmount = tireAmount\n    print(\&quot;truck initialized\&quot;)\nend\n\nfunction Truck:terminate()\n    print(\&quot;truck destroyed\&quot;)\nend\n\nlocal semiTruck = Truck.new(90, Color3.fromRGB(0, 0, 255), 18)\nsemiTruck:Honk()\n\ngreenCar:Destroy()\nsemiTruck:Destroy()\n\nlocal pickupTruck = Classy.NewObjectOfClass(\&quot;Truck\&quot;, 140, Color3.fromRGB(255, 0, 255), 4)\npickupTruck:Honk()\npickupTruck:Destroy()\n\n\n-- Mixin Addition\n-- With Mixins you can have them automatically picked up by Classy by putting them in the ClassMixins folder as Module Scripts\n-- For more information on Mixins and how to use them check the Mixins ModuleScript\nlocal VehicleBoostMixin = {}\n\n\nfunction VehicleBoostMixin.Add(class)\n    assert(class.Boost == nil, \&quot;class already has a &#x27;Boost&#x27; method\&quot;)\n    class.Boost = VehicleBoostMixin.Boost\nend\n\n\nfunction VehicleBoostMixin:Boost()\n    local oldMaxSpeed = self.MaxSpeed\n    self.MaxSpeed = oldMaxSpeed * 2\n    print(\&quot;VROOOOOOMMM\&quot;)\n    task.delay(1, function()\n        self.MaxSpeed = oldMaxSpeed\n    end)\nend\n\nClassy.Mixins.RegisterMixin(\&quot;VehicleBoostMixin\&quot;, VehicleBoostMixin)\n\n-- In another Script\nlocal fastCar = Car.new(160, Color3.fromRGB(255, 255, 255))\n\n-- you could alternatively pass the names of the Mixins you want to add as a table for the 2nd argument of the NewClass and NewSubclass methods\nClassy.Mixins.AddMixin(Car, \&quot;VehicleBoostMixin\&quot;) -- you can even use this on a regular table\n\n-- It&#x27;s also worth noting that passing a object of a class as the first parameter to AddMixin, will add it to the entire class, not the object itself.\n\nfastCar:Boost()\nfastCar:Destroy()\n```&quot;,
+    &quot;source&quot;: {
+        &quot;line&quot;: 108,
+        &quot;path&quot;: &quot;src/init.lua&quot;
+    }
+}</pre></details></div><div class="col col--3"><div class="tableOfContents_35-E thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a><ul><li><a href="#ClassInfo" class="table-of-contents__link toc-highlight">ClassInfo</a></li></ul></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a><ul><li><a href="#Mixins" class="table-of-contents__link toc-highlight">Mixins</a></li></ul></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#GetClass" class="table-of-contents__link toc-highlight">.GetClass</a></li><li><a href="#NewClass" class="table-of-contents__link toc-highlight">.NewClass</a></li><li><a href="#NewObjectOfClass" class="table-of-contents__link toc-highlight">.NewObjectOfClass</a></li><li><a href="#NewSubclass" class="table-of-contents__link toc-highlight">.NewSubclass</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2022 dev-fyuusha. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
+<script src="/Classy/assets/js/runtime~main.04390c91.js"></script>
+<script src="/Classy/assets/js/main.631b27b7.js"></script>
+</body>
+</html>

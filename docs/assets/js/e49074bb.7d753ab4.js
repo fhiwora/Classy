@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[996],{97868:function(s){s.exports=JSON.parse('{"sourceUrl":"https://github.com/dev-fyuusha/Classy/blob/master","baseUrl":"/Classy/","classOrder":[{"section":"Classy","classes":["Classy","Class","Mixins"]}],"apiCategories":[]}')}}]);
